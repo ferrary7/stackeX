@@ -1,10 +1,45 @@
 "use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // Track pathname changes to simulate loading
+  useEffect(() => {
+    // Start loading when pathname changes
+    setLoading(true);
+    setProgress(10);
+
+    const incrementInterval = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress >= 90) {
+          clearInterval(incrementInterval);
+          return 90;
+        }
+        return prevProgress + 10;
+      });
+    }, 100);
+
+    // Complete loading after pathname change is done
+    const completeTimeout = setTimeout(() => {
+      setProgress(100);
+      
+      setTimeout(() => {
+        setLoading(false);
+        setProgress(0);
+      }, 200);
+    }, 500);
+
+    return () => {
+      clearInterval(incrementInterval);
+      clearTimeout(completeTimeout);
+    };
+  }, [pathname]);
 
   return (
     <nav
@@ -14,7 +49,7 @@ export default function Navbar() {
     >
       {/* Logo */}
       <h1
-        className="text-2xl font-bold cursor-pointer hover:text-gray-400 transition"
+        className="text-2xl  font-bold cursor-pointer hover:text-gray-400 transition"
         onClick={() => (window.location.href = "/")}
       >
         stackeX
@@ -42,6 +77,14 @@ export default function Navbar() {
             Login with Google
           </button>
         )}
+      </div>
+      
+      {/* Loading Bar */}
+      <div className="absolute z-100 bottom-0 left-0 h-1 w-full bg-transparent">
+        <div 
+          className={`h-full bg-white transition-all duration-300 ease-in-out ${loading ? 'opacity-100' : 'opacity-0'}`}
+          style={{ width: `${progress}%` }}
+        ></div>
       </div>
     </nav>
   );
