@@ -39,7 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # 🚀 stackX – AI-Powered Project Stack Generator
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)  
-A web application that helps developers **select their tech stack, generate boilerplate code using AI, and set up projects instantly**. Built with **Next.js** for the frontend and **FastAPI** for the backend, stackX simplifies project bootstrapping.
+A web application that helps developers **select their tech stack, generate boilerplate code using AI, and set up projects instantly**. Built with **Next.js**, stackX simplifies project bootstrapping.
 
 ## 🌟 Features
 ✅ **Tech Stack Selection** – Pick your preferred stack  
@@ -52,6 +52,6 @@ A web application that helps developers **select their tech stack, generate boil
 
 ## 🛠 Tech Stack
 - **Frontend**: Next.js, TailwindCSS  
-- **Backend**: FastAPI, PostgreSQL  
+- **Backend**: Node.js  
 - **AI**: Google Gemini  
-- **Hosting**: Vercel (frontend), Railway/Render (backend)
+- **Hosting**: Vercel
