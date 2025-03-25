@@ -34,3 +34,24 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+# 🚀 stackX – AI-Powered Project Stack Generator
+
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)  
+A web application that helps developers **select their tech stack, generate boilerplate code using AI, and set up projects instantly**. Built with **Next.js** for the frontend and **FastAPI** for the backend, stackX simplifies project bootstrapping.
+
+## 🌟 Features
+✅ **Tech Stack Selection** – Pick your preferred stack  
+✅ **AI-Powered Script Generation** – Uses Gemini AI to generate scripts  
+✅ **Download & Execute** – Get ready-to-use project boilerplates  
+✅ **User-Friendly UI** – Built with a sleek **Next.js frontend**  
+✅ **Secure & Efficient** – FastAPI backend ensures speed and reliability  
+
+---
+
+## 🛠 Tech Stack
+- **Frontend**: Next.js, TailwindCSS  
+- **Backend**: FastAPI, PostgreSQL  
+- **AI**: Google Gemini  
+- **Hosting**: Vercel (frontend), Railway/Render (backend)
