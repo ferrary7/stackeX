@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { RiCloseCircleFill } from "react-icons/ri";
@@ -10,11 +10,11 @@ import {
   FaApple,
   FaCaretDown,
 } from "react-icons/fa";
-import * as FaIcons from "react-icons/fa"; // Importing all Fa icons
-import * as SiIcons from "react-icons/si"; // Importing all Si icons
+import * as FaIcons from "react-icons/fa";
+import * as SiIcons from "react-icons/si";
 import { HiOutlineMenu } from "react-icons/hi";
-import stackOptionsData from "../../lib/stackOptions.json"; // Import stackOptionsData from JSON file
-import PromptStack from "../../components/PromptStack"; // Import PromptStack component
+import stackOptionsData from "../../lib/stackOptions.json";
+import PromptStack from "../../components/PromptStack";
 
 export default function SelectStack() {
   const { data: session } = useSession();
@@ -266,31 +266,31 @@ export default function SelectStack() {
 
   return (
     <div className="flex min-h-screen bg-gray-950 text-white">
+      {/* Mobile Sidebar Toggle Button - Make more visible */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="fixed top-16 left-4 z-50 md:hidden bg-blue-600 p-2 rounded-full shadow-lg"
+      >
+        <HiOutlineMenu className="text-white text-xl" />
+      </button>
+
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 w-92 h-full bg-gray-900 p-6 flex flex-col justify-between transition-transform ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-80"
-        } md:translate-x-0 z-100 shadow-lg`}
+        className={`fixed top-0 left-0 w-64 sm:w-72 md:w-92 h-full bg-gray-900 p-3 md:p-6 flex flex-col justify-between transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 z-40 md:z-50 shadow-lg overflow-y-auto`}
       >
         <div>
-          {/* Sidebar Toggle for Mobile */}
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="cursor-pointer md:hidden text-white text-2xl mb-6"
-          >
-            <HiOutlineMenu />
-          </button>
-
           <h1
-            className="text-2xl font-semibold cursor-pointer hover:text-gray-300 transition mb-8"
+            className="text-xl md:text-2xl font-semibold cursor-pointer hover:text-gray-300 transition mb-6 md:mb-8"
             onClick={() => router.push("/")}
           >
             stackeX
           </h1>
 
           {/* Category Navigation */}
-          <h2 className="text-lg font-medium mb-3">Stack Categories</h2>
-          <nav className="space-y-2">
+          <h2 className="text-base md:text-lg font-medium mb-2 md:mb-3">Stack Categories</h2>
+          <nav className="space-y-1 md:space-y-2">
             {["Languages", "Frameworks", "Databases", "Tools"]
               .concat(session ? ["Previous Stacks", "Popular Stacks"] : ["Popular Stacks"])
               .concat(["AI Assistant"])
@@ -298,7 +298,7 @@ export default function SelectStack() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`cursor-pointer w-full text-left px-4 py-2 rounded-md transition ${
+                  className={`cursor-pointer w-full text-left px-3 md:px-4 py-2 rounded-md transition text-sm md:text-base ${
                     selectedCategory === category
                       ? "bg-gray-700 text-white font-semibold"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -312,8 +312,8 @@ export default function SelectStack() {
 
         {/* OS Selection & Generate Button */}
         <div>
-          <h2 className="text-lg font-medium mb-3">Select Your OS</h2>
-          <div className="flex space-x-2 mb-4">
+          <h2 className="text-base md:text-lg font-medium mb-2 md:mb-3">Select Your OS</h2>
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
             {[
               { name: "Windows", icon: FaWindows },
               { name: "Linux", icon: FaLinux },
@@ -322,20 +322,20 @@ export default function SelectStack() {
               <button
                 key={name}
                 onClick={() => setOS(name.toLowerCase())}
-                className={`cursor-pointer p-3 flex items-center rounded-md transition w-full justify-center ${
+                className={`cursor-pointer p-2 md:p-3 flex items-center rounded-md transition w-full justify-center text-sm md:text-base ${
                   os === name.toLowerCase()
                     ? "bg-blue-500 border-blue-600 text-white"
                     : "bg-gray-700 border-gray-600 hover:bg-gray-600"
                 }`}
               >
-                <Icon className="mr-2" />
+                <Icon className="mr-1 md:mr-2" />
                 {name}
               </button>
             ))}
           </div>
 
           <button
-            className="cursor-pointer w-full px-4 py-3 bg-green-500 rounded-md text-lg font-semibold transition hover:bg-green-600 disabled:opacity-50 mb-3"
+            className="cursor-pointer w-full px-3 md:px-4 py-2 md:py-3 bg-green-500 rounded-md text-base md:text-lg font-semibold transition hover:bg-green-600 disabled:opacity-50 mb-2 md:mb-3"
             onClick={handleGenerate}
             disabled={selectedStack.length === 0}
           >
@@ -344,7 +344,7 @@ export default function SelectStack() {
           
           {session && (
             <button
-              className="cursor-pointer w-full px-4 py-3 bg-blue-500 rounded-md text-lg font-semibold transition hover:bg-blue-600 disabled:opacity-50"
+              className="cursor-pointer w-full px-3 md:px-4 py-2 md:py-3 bg-blue-500 rounded-md text-base md:text-lg font-semibold transition hover:bg-blue-600 disabled:opacity-50"
               onClick={saveStack}
               disabled={selectedStack.length === 0}
             >
@@ -355,34 +355,35 @@ export default function SelectStack() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 ml-94 transition-all">
-        <h1 className="text-3xl font-semibold mb-6">{selectedCategory}</h1>
+      <main className="flex-1 p-4 md:p-8 ml-0 md:ml-94 transition-all pt-16 md:pt-8">
+        <h1 className="text-2xl md:text-3xl font-semibold mb-4 md:mb-6">{selectedCategory}</h1>
 
         {/* Stack Selection Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {selectedCategory === "Previous Stacks" && userStacks.map((stack, index) => (
             <div key={`previous-${index}`} className="relative">
               <button
                 onClick={() => toggleStack(stack.stacks)}
-                className={`cursor-pointer p-4 w-full flex items-center justify-center space-x-2 rounded-md transition border ${
+                className={`cursor-pointer p-3 md:p-4 w-full flex items-center justify-center space-x-1 md:space-x-2 rounded-md transition border text-sm md:text-base ${
                   stack.stacks.every(tech => selectedStack.includes(tech))
                     ? "bg-blue-500 border-blue-600 text-white"
                     : "bg-gray-800 border-gray-700 hover:bg-gray-700"
                 }`}
               >
-                <span>{stack.stacks.join(", ")}</span>
+                <span className="line-clamp-1">{stack.stacks.join(", ")}</span>
               </button>
               <RiCloseCircleFill
                 onClick={() => handleDelete(stack)}
-                className="absolute top-1 right-1 text-red-500 h-6 w-6 cursor-pointer"
+                className="absolute top-1 right-1 text-red-500 h-5 w-5 md:h-6 md:w-6 cursor-pointer"
               />
             </div>
           ))}
+          
           {selectedCategory === "Popular Stacks" && popularStacks.map((stack, index) => (
             <button
               key={`popular-${index}`}
               onClick={() => toggleSelection(stack.name || stack)}
-              className={`cursor-pointer p-4 flex items-center justify-center space-x-2 rounded-md transition border ${
+              className={`cursor-pointer p-3 md:p-4 flex items-center justify-center space-x-1 md:space-x-2 rounded-md transition border text-sm md:text-base ${
                 selectedStack.includes(stack.name || stack)
                   ? "bg-blue-500 border-blue-600 text-white"
                   : "bg-gray-800 border-gray-700 hover:bg-gray-700"
@@ -391,27 +392,28 @@ export default function SelectStack() {
               <span>{stack.name || stack}</span>
             </button>
           ))}
+          
           {stackOptions[selectedCategory]?.map(({ name, icon, versions }) => {
             const IconComponent = FaIcons[icon] || SiIcons[icon];
             const selectedVersion = selectedVersions[name];
             return (
               <div 
                 key={name} 
-                className="relative bg-gray-800 rounded-lg shadow-lg p-4 cursor-pointer"
+                className="relative bg-gray-800 rounded-lg shadow-lg p-3 md:p-4 cursor-pointer"
                 onClick={() => toggleSelection(name)}
               >
                 <div className="flex flex-col items-center">
-                  <div className="mb-4">
-                    {IconComponent && <IconComponent className="text-6xl" />}
+                  <div className="mb-3 md:mb-4">
+                    {IconComponent && <IconComponent className="text-4xl md:text-6xl" />}
                   </div>
-                  <div className="flex justify-between w-full">
-                    <div>
-                      <span className="text-l">{name}{selectedVersion ? ` (v${selectedVersion})` : ""}</span>
+                  <div className="flex justify-between w-full items-center">
+                    <div className="truncate max-w-[75%]">
+                      <span className="text-sm md:text-base">{name}{selectedVersion ? ` (v${selectedVersion})` : ""}</span>
                     </div>
                     <div>
                       <FaCaretDown
                         onClick={(e) => openVersionModal(name, e)}
-                        className="cursor-pointer"
+                        className="cursor-pointer ml-1"
                       />
                     </div>
                   </div>
@@ -423,28 +425,29 @@ export default function SelectStack() {
             );
           })}
         </div>
-      {/* PromptStack Component */}
-      {selectedCategory === "AI Assistant" && (
-        <div className="flex flex-col mt-120 justify-center w-full bg-gray-950 shadow-lg">
-          <PromptStack />
-        </div>
-      )}
+        
+        {/* PromptStack Component */}
+        {selectedCategory === "AI Assistant" && (
+          <div className="flex flex-col mt-4 md:mt-120 w-full bg-gray-950 shadow-lg">
+            <PromptStack />
+           </div>
+        )}
       </main>
 
-      {/* Version Modal */}
+      {/* Version Modal - Improved for Mobile */}
       {versionModal.open && (
         <div 
-          className="version-modal absolute bg-gray-800 rounded-lg shadow-xl border border-gray-700 w-64 overflow-hidden z-50"
+          className="version-modal fixed sm:absolute bg-gray-800 rounded-lg shadow-xl border border-gray-700 w-3/4 sm:w-64 overflow-hidden z-50 left-1/2 top-1/2 sm:top-auto sm:left-auto transform -translate-x-1/2 -translate-y-1/2 sm:transform-none"
           style={{ 
-            top: versionModal.position.top,
-            left: versionModal.position.left,
+            top: window.innerWidth > 640 ? versionModal.position.top : '50%',
+            left: window.innerWidth > 640 ? versionModal.position.left : '50%',
             maxHeight: '60vh',
             animation: 'modalFadeIn 0.2s ease-out'
           }}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-700">
-            <h2 className="text-lg font-medium text-white">Select Version</h2>
+            <h2 className="text-base md:text-lg font-medium text-white">Select Version</h2>
             <button 
               onClick={closeVersionModal}
               className="text-gray-400 hover:text-white focus:outline-none transition-colors"
@@ -453,7 +456,7 @@ export default function SelectStack() {
             </button>
           </div>
           <div className="p-4 max-h-[40vh] overflow-y-auto">
-            <p className="text-sm text-gray-400 mb-3">{versionModal.tech}</p>
+            <p className="text-xs md:text-sm text-gray-400 mb-3">{versionModal.tech}</p>
             <div className="space-y-1.5">
               {stackOptions[selectedCategory]
                 .find((tech) => tech.name === versionModal.tech)
@@ -461,7 +464,7 @@ export default function SelectStack() {
                   <button
                     key={version}
                     onClick={() => selectVersion(version)}
-                    className={`cursor-pointer w-full text-left px-3 py-2 rounded-md transition-colors text-sm flex items-center justify-between ${
+                    className={`cursor-pointer w-full text-left px-3 py-2 rounded-md transition-colors text-xs md:text-sm flex items-center justify-between ${
                       selectedVersions[versionModal.tech] === version
                         ? "bg-blue-600/40 text-white"
                         : "text-gray-300 hover:bg-gray-700/50"
@@ -478,10 +481,10 @@ export default function SelectStack() {
         </div>
       )}
 
-      {/* To handle clicks outside the modal */}
+      {/* Overlay for version modal on mobile */}
       {versionModal.open && (
         <div 
-          className="fixed inset-0 z-40" 
+          className="fixed inset-0 z-40 bg-black bg-opacity-50" 
           onClick={closeVersionModal}
         ></div>
       )}
