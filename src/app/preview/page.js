@@ -6,6 +6,7 @@ import axios from "axios";
 
 export default function Preview() {
   const searchParams = useSearchParams();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const stack = searchParams.get("stack")?.split(",") || [];
   const os = searchParams.get("os");
   const [script, setScript] = useState("");
