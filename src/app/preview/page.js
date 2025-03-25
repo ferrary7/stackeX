@@ -1,19 +1,32 @@
 "use client";
 
+import { Suspense } from "react";
+
+export default function Preview() {
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-6">
+      <h1 className="text-3xl font-bold mt-10 mb-5">📜 Installation Script Preview</h1>
+      <Suspense fallback={<p className="mt-4 text-gray-300">Loading...</p>}>
+        <PreviewContent />
+      </Suspense>
+    </div>
+  );
+}
+
+// Separated component that uses useSearchParams
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 
-export default function Preview() {
+function PreviewContent() {
   const searchParams = useSearchParams();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const stack = searchParams.get("stack")?.split(",") || [];
   const os = searchParams.get("os");
   const [script, setScript] = useState("");
   const [loading, setLoading] = useState(false);
   const [hasFetched, setHasFetched] = useState(false);
   const [error, setError] = useState(false);
-  const [downloadStarted, setDownloadStarted] = useState(false); 
+  const [downloadStarted, setDownloadStarted] = useState(false);
 
   useEffect(() => {
     if (stack.length === 0 || hasFetched || !os) return;
@@ -63,8 +76,7 @@ export default function Preview() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold mt-10 mb-5">📜 Installation Script Preview</h1>
+    <>
       {loading ? (
         <p className="mt-4 text-gray-300">Generating script...</p>
       ) : (
@@ -105,6 +117,6 @@ export default function Preview() {
       >
         Select Another Stack
       </button>
-    </div>
+    </>
   );
 }
